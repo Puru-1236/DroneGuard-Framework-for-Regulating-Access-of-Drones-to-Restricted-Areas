@@ -1,3 +1,4 @@
+#This script is run at drone side to get the location from gps module and to send the location to drone network controller in specific time interval.
 from dronekit import connect, VehicleMode
 import sys
 import time
@@ -56,12 +57,16 @@ def parseGPS(data):
         speed = sdata[7]       #Speed in knots
         trCourse = sdata[8]    #True course
         date = sdata[9][0:2] + "/" + sdata[9][2:4] + "/" + sdata[9][4:6]#date
-        location = bytes(lat, 'utf-8')
-        s.sendall(location)
+        
+	location = bytes(lat, 'utf-8')
+        #latitude of drone
+	s.sendall(location)
+	#longitude of drone
         location2 = bytes(lon, 'utf-8')
         s.sendall(location2)
         d1 = s.recv(1024)
         d1 = d1.decode('utf-8')
+	
         if d1 == "RTL" :
             print("Drone is in Security Sensitive Area\n")
             vehicle.mode    = VehicleMode("RTL")
