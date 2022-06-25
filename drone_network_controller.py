@@ -1,10 +1,13 @@
+#Drone network controller script which runs continuously and checks the condition the condition that drone is nearby the security sensitive area.
 import socket
 import time
 
+#Controller ip 
 HOST = "192.168.43.121"
 PORT = 65432
-id=100
+id=100 #For giving id to each drone
 
+#Create socket to take any request of connection from any drone.
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST,PORT))
     s.listen()
@@ -15,6 +18,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         data = conn.recv(1024)
         data = data.decode('utf-8')
         #print(F"Received{data!r}")
+	#Latitude of drone
         print("Drone id : ",id, " and Latitude of Drone : ", data,"\n")
         lt = data.split()
         print(float(lt[2]),"\n")
@@ -23,13 +27,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         data1 = data1.decode('utf-8')
         #print(F"Received{data1!r}")
 
-
+        #Longitude of Drone
         print("Drone id : ",id, "and Longitude of Drone : ", data1,"\n")
         ln = data1.split()
         print(float(ln[2]),"\n")
         long_min = float(ln[2])
 
-
+        #Condition for location checking, we can use shaply library also to make polygon from lat , long.
         if lat_min>= 0.7100 and lat_min<=0.79999 and long_min>=20.4000 and long_min<=20.8000:   
         #if data == "26 deg 00.7425 min" and data1=="076 deg 20.7050 min":
             print("Drone is in security sensitive area \n")
