@@ -1,3 +1,4 @@
+#This code is to get the gps_location from L80-M39 GPS module throguht parse the GPRMC data.
 import serial
 port = "/dev/serial0"
 
